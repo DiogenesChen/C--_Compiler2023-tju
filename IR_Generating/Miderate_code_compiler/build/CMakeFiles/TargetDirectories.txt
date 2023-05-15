@@ -1,0 +1,4 @@
+/Users/faust/Desktop/作业/编译原理/C--_Compiler/IR_Generating/Miderate_code_compiler/build/CMakeFiles/project1.dir
+/Users/faust/Desktop/作业/编译原理/C--_Compiler/IR_Generating/Miderate_code_compiler/build/CMakeFiles/rebuild_cache.dir
+/Users/faust/Desktop/作业/编译原理/C--_Compiler/IR_Generating/Miderate_code_compiler/build/CMakeFiles/edit_cache.dir
+/Users/faust/Desktop/作业/编译原理/C--_Compiler/IR_Generating/Miderate_code_compiler/build/CMakeFiles/project1_lib.dir
