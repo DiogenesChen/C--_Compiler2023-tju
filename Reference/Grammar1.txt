@@ -1,0 +1,43 @@
+program -> compUnit
+compUnit -> decl compUnit | funcDef compUnit | $
+decl -> constDecl | varDecl
+constDecl -> const bType constDef argConst ;
+argConst -> , constDef argConst | $
+constDef -> Ident = constInitVal
+constInitVal -> constExp
+varDecl -> bType varDef argVarDecl ;
+argVarDecl -> , varDef argVarDecl | $
+varDef -> Ident argVarDef
+argVarDef -> = initVal | $
+initVal -> exp
+bType -> int
+funcDef -> funcType Ident ( funcFParams ) block
+funcType -> void
+funcFParams -> funcFParam argFunctionF | $
+argFunctionF -> , funcFParam argFunctionF | $
+funcFParam -> bType Ident
+block -> { blockItem }
+blockItem -> decl blockItem | stmt blockItem | $
+stmt -> exp ; | ; | block | return argExp ;
+argExp -> $ | exp
+exp -> assignExp
+lVal -> Ident
+primaryExp -> ( exp ) | number
+number -> INT
+unaryOp -> + | - | !
+unaryExp -> unaryOp unaryExp | Ident callFunc | primaryExp
+callFunc -> ( funcRParams ) | $
+funcRParams -> funcRParam argFunctionR | $
+argFunctionR -> , funcRParam argFunctionR | $
+funcRParam -> exp
+mulExp -> unaryExp mulExpAtom
+mulExpAtom -> * unaryExp mulExpAtom | / unaryExp mulExpAtom | % unaryExp mulExpAtom | $
+addExp -> mulExp addExpAtom
+addExpAtom -> + mulExp addExpAtom | - mulExp addExpAtom | $
+relExp -> addExp relExpAtom
+relExpAtom -> < addExp relExpAtom | > addExp relExpAtom | <= addExp relExpAtom | >= addExp relExpAtom | $
+eqExp -> relExp eqExpAtom
+eqExpAtom -> == relExp eqExpAtom | != relExp eqExpAtom | $
+assignExp -> eqExp assignExpAtom
+assignExpAtom -> = eqExp assignExpAtom | $
+constExp ->  assignExp
