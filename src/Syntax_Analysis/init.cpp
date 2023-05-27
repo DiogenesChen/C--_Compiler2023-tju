@@ -109,26 +109,3 @@ int Init(const char *file_name) {
     return 0;
 }
 
-// int main() {
-//     Init("grammar1.txt");
-//     cout << "TERMINALS:";
-//     for (auto const & t : terminals) {
-        
-//         cout << t << " ";
-//     }
-//     cout << endl;
-
-//     cout << "UNTERMINALS:";
-//     for (auto const & t : non_terminals) {
-        
-//         cout << t << " ";
-//     }
-//     cout << endl;
-
-//     cout << "START: " << start << endl;
-
-    
-
-//     return 0;
-// }
-

@@ -6,9 +6,9 @@
 #include <vector>
 #include <unordered_map>
 #include <iomanip>
-#include "init.h"
-#include "calculate.h"
-#include "table.h"
+#include "include/init.h"
+#include "include/calculate.h"
+#include "include/table.h"
 
 using namespace std;
 
@@ -55,7 +55,7 @@ void get_tokens(const char *file_name) {
     }
 }
 
-void syntax_analysis() {
+void grammar_analysis() {
     // # 和 开始符入栈
     sym_stack.push_back("#");
     sym_stack.push_back(start);
@@ -154,15 +154,3 @@ void syntax_analysis() {
         
     }
 }
-
-// int main() {
-//     get_tokens("lexical.txt");
-
-//     for(auto const& t : tokens) {
-//         cout << t;
-//     }
-
-//     cout << endl;
-
-//     return 0;
-// }

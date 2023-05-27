@@ -14,12 +14,6 @@
 #include "table.h"
 
 extern void get_tokens(const char *file_name);
-extern void syntax_analysis();
-
-
-
-
-
-
+extern void grammar_analysis();
 
 #endif

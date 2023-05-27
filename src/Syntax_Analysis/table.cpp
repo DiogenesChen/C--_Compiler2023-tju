@@ -7,8 +7,8 @@
 #include <vector>
 #include <unordered_map>
 #include <iomanip>
-#include "init.h"
-#include "calculate.h"
+#include "include/init.h"
+#include "include/calculate.h"
 
 using namespace std;
 
