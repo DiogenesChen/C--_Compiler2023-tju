@@ -1,4 +1,4 @@
-#include "include/syntax_analysis.h"
+#include "../../include/syntax_analysis.h"
 
 void syntax_analysis(){
     

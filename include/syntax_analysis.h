@@ -2,11 +2,11 @@
 #define SYNTAX_ANAYLYSIS_H
 #include <iostream>
 #include <vector>
-#include "include/init.h"
-#include "include/calculate.h"
-#include "include/table.h"
-#include "include/grammar_analysis.h"
-#include "include/lex_analysis.h"  
+#include "./init.h"
+#include "./calculate.h"
+#include "./table.h"
+#include "./grammar_analysis.h"
+#include "./lex_analysis.h"  
 
 using namespace std;
 #define NFA_SIZE 30

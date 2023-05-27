@@ -1,4 +1,4 @@
-#include "include/lex_analysis.h"
+#include "../../include/lex_analysis.h"
 using namespace std;
 
 typedef struct trans_map{

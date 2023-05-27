@@ -9,9 +9,9 @@
 #include <vector>
 #include <unordered_map>
 #include <iomanip>
-#include "init.h"
-#include "calculate.h"
-#include "table.h"
+#include "./init.h"
+#include "./calculate.h"
+#include "./table.h"
 
 extern void get_tokens(const char *file_name);
 extern void grammar_analysis();

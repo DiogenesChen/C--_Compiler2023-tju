@@ -6,9 +6,9 @@
 #include <vector>
 #include <unordered_map>
 #include <iomanip>
-#include "include/init.h"
-#include "include/calculate.h"
-#include "include/table.h"
+#include "../../include/init.h"
+#include "../../include/calculate.h"
+#include "../../include/table.h"
 
 using namespace std;
 
