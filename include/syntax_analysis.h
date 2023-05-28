@@ -1,16 +1,20 @@
-#ifndef SYNTAX_ANAYLYSIS_H
-#define SYNTAX_ANAYLYSIS_H
+#ifndef SYNTAX_H
+#define SYNTAX_H
+
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <map>
+#include <set>
 #include <vector>
-#include "./init.h"
-#include "./calculate.h"
-#include "./table.h"
-#include "./grammar_analysis.h"
-#include "./lex_analysis.h"  
+#include <unordered_map>
+#include <iomanip>
+#include "init.h"
+#include "calculate.h"
+#include "table.h"
 
-using namespace std;
-#define NFA_SIZE 30
+extern void get_tokens(const char *file_name);
+extern void syntax_analysis();
 
-void syntax_analysis();
 
 #endif

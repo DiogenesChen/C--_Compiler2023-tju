@@ -1,51 +1,8 @@
-#include "../../include/lex_analysis.h"
-using namespace std;
-
-typedef struct trans_map{
-    char rec;
-    int now;
-    int next;
-} transform_map;
+#include "lex_analysis.h"
 
 bool operator<(const trans_map &a,const trans_map &b){
     return a.now + 100*int(a.rec) < b.now + 100*int(b.rec);
 }
-
-typedef struct finite_automata{
-    vector<char> input_symbols;    //可以输入的字符集
-    set<int> states;   //状态集合  
-    map<int, string> state_labels;   //非终态的label是描述，终态的label是输出
-    // transform_map trans_map[30] = {};    //子集映射规则，A接受t到B
-    set<transform_map> trans_map;    //子集映射规则，A接受t到B
-    // set<pair<char,pair<int,int>>> trans_map;    //子集映射规则，A接受t到B
-    set<int> start;    //初始集
-    set<int> final;   //终态集
-} FA;  //FA定义 五元组
-
-map<string, string> symbols_table = {
-    {"int","KW"},{"void","KW"},{"return","KW"},{"const","KW"},{"main","KW"},
-    {"+","OP"},{"-","OP"},{"*","OP"},{"/","OP"},{"%","OP"},{"=","OP"},{">","OP"},
-    {"<","OP"},{"==","OP"},{"<=","OP"},{">=","OP"},{"!=","OP"},{"&&","OP"},{"||","OP"},
-    {"(","SE"},{")","SE"},{"{","SE"},{"}","SE"},{";","SE"},{",","SE"}
-};
-map<string, string> processed_symbols_table = {};
-
-vector<char> lex_input_symbols = {'n','l','o','s','_','0','=','>','<','!','&','|','-'};
-set<int> lex_states = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18};
-map<int,string> lex_state_labels = {{1,"n"},{2,"l"},{3,"o"},{4,"s"},{5,"_"},{6,"0"},{7,"="},{8,">"},{9,"<"},{10,"!"},{11,"&"},{12,"|"},{13,"INT"},{14,"SE"},{15,"I&K"},{16,"OP"},{17,"none"},{18,"OP"}}; //#表示
-set<int> lex_start = {17};
-set<int> lex_final = {13,14,15,16,18};
-// set<transform_map> lex_trans_map = {{'n',1,13},{'@',1,13},{'0',1,13},{'n',13,13},{'0',13,13},{'@',2,15},{'n',2,15},{'0',2,15},{'_',2,15},{'l',2,15},{'_',15,15},{'n',15,15},{'0',15,15},{'l',15,15},{'@',3,16},{'S',4,14},{'@',7,16},{'=',7,16},{'@',8,16},{'=',8,16},{'@',9,16},{'=',9,16},{'=',10,16},{'&',11,16},{'|',12,16},{'n',17,1},{'l',17,2},{'o',17,3},{'s',17,4},{'_',17,5},{'0',17,6},{'=',17,7},{'>',17,8},{'<',17,9},{'!',17,10},{'&',17,11},{'|',17,12}};
-set<transform_map> lex_trans_map = {{'@',1,13},{'0',13,13},{'n',13,13},{'@',2,15},{'l',15,15},{'0',15,15},{'_',15,15},{'n',15,15},{'@',4,14},{'@',3,16},{'@',5,15},{'@',7,16},{'@',8,16},{'=',8,16},{'@',9,16},{'=',9,16},{'=',10,16},{'&',11,16},{'|',12,16},{'n',18,13},{'n',17,1},{'l',17,2},{'o',17,3},{'s',17,4},{'_',17,5},{'0',17,6},{'=',17,7},{'>',17,8},{'<',17,9},{'!',17,10},{'&',17,11},{'|',17,12},{'-',17,18}};
-
-
-vector<char> test1_input_symbols = {'a','b'};
-set<int> test1_states = {1,2,3,4,5,6,7,8};
-map<int,string> test1_state_labels = {{1,"n"},{2,"l"},{3,"o"},{4,"s"},{5,"_"},{6,"0"},{7,"="},{8,">"}}; //#表示
-set<int> test1_start = {8};
-set<int> test1_final = {7};
-set<transform_map> test1_trans_map = {{'@',8,1},{'@',1,2},{'@',5,6},{'@',6,7},{'a',1,1},{'b',1,1},{'a',2,3},{'a',3,5},{'b',2,4},{'b',4,5},{'a',6,6},{'b',6,6},};
-
 
 void printFA(FA FA){
     cout << "----input_symbols----" << endl;
@@ -208,6 +165,7 @@ int findNewstate(map<set<int>,int> trans_between_DmD, int state){
     for(map<set<int>,int>::iterator i = trans_between_DmD.begin(); i != trans_between_DmD.end();i++ ){
         if(i->first.count(state))   return i->second;
     }
+    return 0;
 }
 
 FA minimizeDFA(FA DFA){
@@ -355,31 +313,30 @@ int getBC(string line){
 string getCatogory(int state, string str_token, FA DFA){
     if(DFA.state_labels[state]=="INT"){
         if(!processed_symbols_table.count(str_token)) processed_symbols_table.insert({str_token,DFA.state_labels[state]});
-        return "<INT,"+str_token+">";
+        // return "<INT,"+str_token+">";
+        return "<INT>";
     } else if(DFA.state_labels[state] == "SE"){
         if(!processed_symbols_table.count(str_token)) processed_symbols_table.insert({str_token,DFA.state_labels[state]});
-        return "<SE,"+str_token+">";
+        // return "<SE,"+str_token+">";
+        return "<SE>";
     } else if(DFA.state_labels[state] == "OP"){
         if(!processed_symbols_table.count(str_token)) processed_symbols_table.insert({str_token,DFA.state_labels[state]});
-        return "<OP,"+str_token+">";
+        // return "<OP,"+str_token+">";
+        return "<OP>";
     } else if(DFA.state_labels[state] == "I&K" && symbols_table[str_token] == "KW"){
         if(!processed_symbols_table.count("KW")) processed_symbols_table.insert({str_token,DFA.state_labels[state]});
-        return "<KW,"+str_token+">";
+        // return "<KW,"+str_token+">";
+        return "<KW>";
     } else{
         if(!processed_symbols_table.count(str_token)) processed_symbols_table.insert({str_token,"IDN"});
-        return "<IDN,"+str_token+">";
+        // return "<IDN,"+str_token+">";
+        return "<IDN>";
     }
-}
-
-vector<string> erroProcessing(int state, char ch, FA DFA){
-    vector<string> errolog;
-    string error_category;
-
 }
 
 void generateFile(vector<string> str_token_vector){
     ofstream output;
-    output.open("../out/tokens.txt", ios::out);
+    output.open("out/tokens.txt", ios::out);
     for(int i=0;i<str_token_vector.size();i++){
         if(i == str_token_vector.size()-1){
             output << str_token_vector[i];
@@ -394,7 +351,7 @@ void lexcial(const char* file_address, FA DFA){
     string str_token;
     vector<string> str_token_vector;
     ofstream write;
-	write.open("../out/15lex.txt", ios::out);
+	write.open("out/lex.txt", ios::out);
     ifstream file;
     file.open(file_address, ios_base::in);
     set<int>::iterator get_start;   //从DFA的start开始
@@ -473,10 +430,9 @@ void lexcial(const char* file_address, FA DFA){
     }
 }
 
-void lex_analysis(){
+void lexical_analysis(){
     FA NFA, DFA, minDFA;
-    NFA.input_symbols = lex_input_symbols;  //这里换成test1_~是课本样例，用于检验NFA2DFA和minimizeDFA的正确性
-    NFA.states = lex_states;
+    NFA.input_symbols = lex_input_symbols;  //这里换成test1_~是课本样例，用于检验NFA2DFA和minim      
     NFA.start = lex_start;
     NFA.final = lex_final;
     NFA.trans_map = lex_trans_map;
@@ -484,11 +440,11 @@ void lex_analysis(){
     cout << "NFA" << endl;
     printFA(NFA);
     DFA = NFA2DFA(NFA);
-    cout << endl << "DFA" << endl;
+    cout << endl << "DFA" << endl; 
     printFA(DFA);
     minDFA = minimizeDFA(DFA);
     cout << endl << "minDFA" << endl;
     printFA(minDFA);
     cout << endl;
-    lexcial("../src_in/test15.txt", minDFA);
+    lexcial("src_in/test15.txt", minDFA);
 }

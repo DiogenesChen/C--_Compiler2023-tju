@@ -7,8 +7,8 @@
 #include <map>
 #include <set>
 #include <vector>
-#include "./init.h"
-#include "./calculate.h"
+#include "init.h"
+#include "calculate.h"
 using namespace std;
 
 extern map<string, set<string>> select_sets; 

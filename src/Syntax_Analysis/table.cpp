@@ -7,8 +7,8 @@
 #include <vector>
 #include <unordered_map>
 #include <iomanip>
-#include "../../include/init.h"
-#include "../../include/calculate.h"
+#include "init.h"
+#include "calculate.h"
 
 using namespace std;
 
@@ -54,10 +54,7 @@ void print_select() {
 
 // 计算select集合，便于求分析表
 void compute_select_sets() {
-    // cout << "START SELCET: " << endl;
     for(auto const& [lhs, rhs] : prods) {
-        // cout << "START lhs :" << lhs <<endl;
-
         for(auto const& prod: rhs) {
             vector<string> proc;
             proc.push_back(lhs);
@@ -87,46 +84,50 @@ void compute_select_sets() {
 }
 
 void compute_table() {
-    cout << "######LL(1) ANALYSIS TABLE######" << endl;
-    terminals.insert("#");
-    cout << setw((terminals.size()*40 + 20)) << left << setfill('=') << "TABLE:" << endl;
-    cout << setw(30) << left << setfill(' ') << "VN/VT";
-    for (auto const & ter : terminals) {
-        if (ter != "$") {
-            cout << setw(40) << left << ter << setfill(' ');
-        }
-        
-    }
-    cout << endl;
-
-    for(auto const& non_ter : non_terminals) { 
-        cout << setw(30) << left  << non_ter << setfill(' ');
-        
-
-        for(auto const& ter : terminals) {
+    ofstream out("out/ll1_table.txt");
+    if (out.is_open()) {
+        out << "######LL(1) ANALYSIS TABLE######" << endl;
+        terminals.insert("#");
+        out << setw((terminals.size()*40 + 20)) << left << setfill('=') << "TABLE:" << endl;
+        out << setw(30) << left << setfill(' ') << "VN/VT";
+        for (auto const & ter : terminals) {
             if (ter != "$") {
-                bool flag = 0;
-
-                for(auto const& prod : prods[non_ter]) {
-                    vector<string> proc;
-                    proc.push_back(non_ter);
-                    proc.push_back(prod);
-
-                    if(select_sets[proc].find(ter)!=select_sets[proc].end()) {
-                        // string tmp = non_ter + " -> " + prod;
-                        cout << setw(40) << left << prod << setfill(' ') ;
-                        flag = 1;
-                    }
-                }
-
-                if(!flag) cout << setw(40) << left << "ERR" << setfill(' ');
+                out << setw(40) << left << ter << setfill(' ');
             }
             
         }
-        
-        
-        cout << endl; 
+        out << endl;
+
+        for(auto const& non_ter : non_terminals) { 
+            out << setw(30) << left  << non_ter << setfill(' ');
+            
+
+            for(auto const& ter : terminals) {
+                if (ter != "$") {
+                    bool flag = 0;
+
+                    for(auto const& prod : prods[non_ter]) {
+                        vector<string> proc;
+                        proc.push_back(non_ter);
+                        proc.push_back(prod);
+
+                        if(select_sets[proc].find(ter)!=select_sets[proc].end()) {
+                            // string tmp = non_ter + " -> " + prod;
+                            out << setw(40) << left << prod << setfill(' ') ;
+                            flag = 1;
+                        }
+                    }
+
+                    if(!flag) out << setw(40) << left << "ERR" << setfill(' ');
+                }
+                
+            }
+            
+            
+            out << endl; 
+        }
     }
+    
     
 }
 

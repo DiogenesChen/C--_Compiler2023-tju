@@ -4,7 +4,7 @@
 #include <vector>
 #include <map>
 #include <set>
-#include "../../include/init.h"
+#include "init.h"
 
 using namespace std;
 
@@ -12,8 +12,6 @@ map<string, set<string>> FirstSets;
 map<string, set<string>> FollowSets;
 
 bool changed = true;
-
-
 
 bool is_terminal(string x) {
     return terminals.find(x) != terminals.end();
@@ -24,29 +22,37 @@ bool is_non_terminal(string x) {
 }
 
 void print_first() {
-     cout << "######FIRST SETS######"<<endl;
-    for (auto const & [symbol, first] : FirstSets) {
-        if (is_non_terminal(symbol)) {
-            cout << symbol << ": ";
-            for (auto const & t : first) {
-            cout << t << " ";
+    ofstream out("out/first_set.txt");
+    if(out.is_open()) {
+        out << "######FIRST SETS######"<<endl;
+        for (auto const & [symbol, first] : FirstSets) {
+            if (is_non_terminal(symbol)) {
+                out << symbol << ": ";
+                for (auto const & t : first) {
+                out << t << " ";
+                }
+                out << endl;
             }
-            cout << endl;
         }
     }
+    
 }
 
 void print_follow() {
-     cout << "######FOLLOW SETS######"<<endl;
-    for (auto const & [symbol, follow] : FollowSets) {
-        if (is_non_terminal(symbol)) {
-            cout << symbol << ": ";
-            for (auto const & t : follow) {
-            cout << t << " ";
+    ofstream out("out/follow_set.txt");
+    if(out.is_open()) {
+        out << "######FOLLOW SETS######"<<endl;
+        for (auto const & [symbol, follow] : FollowSets) {
+            if (is_non_terminal(symbol)) {
+                out << symbol << ": ";
+                for (auto const & t : follow) {
+                out << t << " ";
+                }
+                out << endl;
             }
-            cout << endl;
         }
     }
+    
 }
 
 // 判断非终结符的产生式里有没有空

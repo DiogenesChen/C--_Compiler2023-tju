@@ -1,46 +1,53 @@
 ##### global settings #####
-.PHONY: clean
+.PHONY: clean all
 
 CPP := g++
-CPP_FLAGS='-std=c++17'
+CPP_FLAGS := -std=c++17 -c -Werror
 
 BIN_DIR := ./bin
+INC_DIR := ./include
+COM_DIR := ./src
 LEX_DIR := ./src/Lex_Analysis
 SYN_DIR := ./src/Syntax_Analysis
 OUT_DIR := ./out
 IN_DIR := ./src_in
 
+SOURCE=$(wildcard $(COM_DIR)/*.cpp $(LEX_DIR)/*.cpp $(SYN_DIR)/*.cpp)
+OBJS=$(patsubst %.cpp, %.o, $(notdir $(SOURCE)))
+
 ##### rules for building the project #####
 
-target:Compiler_front_end lexical_analysis syntax_analysis init calculate table \
-		grammar_analysis
-Compiler_front_end:Compiler_front_end.cpp
-	$(CPP) $(CPP_FLAGS) Compiler_front_end.cpp -o $(BIN_DIR)/Compiler_front_end
-lexical_analysis:$(LEX_DIR)/lexical_analysis.cpp
-	$(CPP) $(CPP_FLAGS) $(LEX_DIR)/lexical_analysis.cpp -o $(BIN_DIR)/lexical_analysis
-syntax_analysis:$(SYN_DIR)/syntax_analysis.cpp
-	$(CPP) $(CPP_FLAGS) $(SYN_DIR)/syntax_analysis.cpp -o $(BIN_DIR)/syntax_analysis
-init:$(SYN_DIR)/init.cpp
-	$(CPP) $(CPP_FLAGS) $(SYN_DIR)/init.cpp -o $(BIN_DIR)/init
-calculate:$(SYN_DIR)/calculate.cpp
-	$(CPP) $(CPP_FLAGS) $(SYN_DIR)/calculate.cpp -o $(BIN_DIR)/calculate
-table:$(SYN_DIR)/table.cpp
-	$(CPP) $(CPP_FLAGS) $(SYN_DIR)/table.cpp -o $(BIN_DIR)/table
-grammar_analysis:$(SYN_DIR)/grammar_analysis.cpp
-	$(CPP) $(CPP_FLAGS) $(SYN_DIR)/grammar_analysis.cpp -o $(BIN_DIR)/grammar_analysis
+all: mkdir target
+
+mkdir:
+	mkdir -p $(BIN_DIR)
+	mkdir -p $(OUT_DIR)
+
+ifeq ($(OS),"Windows_NT")
+target:$(addprefix $(BIN_DIR)/, $(OBJS))
+	$(CPP) $^ -o compiler_front_end.exe
+else
+target:$(addprefix $(BIN_DIR)/, $(OBJS))
+	$(CPP) $^ -o compiler_front_end
+endif
+
+$(BIN_DIR)/%.o:$(COM_DIR)/%.cpp
+	$(CPP) $(CPP_FLAGS) $< -I $(INC_DIR) -o $@
+$(BIN_DIR)/%.o:$(LEX_DIR)/%.cpp
+	$(CPP) $(CPP_FLAGS) $< -I $(INC_DIR) -o $@
+$(BIN_DIR)/%.o:$(SYN_DIR)/%.cpp
+	$(CPP) $(CPP_FLAGS) $< -I $(INC_DIR) -o $@
 
 ##### rules for cleaning the project #####
 
+ifeq ($(OS),Windows_NT)
 clean:
-	rm -rf $(BIN_DIR)/*
-	rm -rf $(BIN_DIR)/*.exe
-	rm -rf $(OUT_DIR)/*.txt
-
-clean-out:
-	rm -rf $(OUT_DIR)/*.txt
-
-clean-bin:
-	rm -rf $(BIN_DIR)/*
-	rm -rf $(BIN_DIR)/*.exe
-
-
+	del $(BIN_DIR)/*.o
+	del Compiler_front_end.exe
+	del $(OUT_DIR)/out.txt
+else
+clean:
+	rm -rf $(BIN_DIR)
+	rm -rf $(OUT_DIR)
+	rm -f Compiler_front_end
+endif
