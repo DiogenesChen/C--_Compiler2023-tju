@@ -38,18 +38,10 @@ C--语言是C语言的一个简化版本, 去除了一些复杂的特性. 项目
 
 以下是使用示例:
 
-Unix-like机器:
 ```
 $ make clean #清除全部bin及txt输出文件
 $ make #编译
-$ ./Compiler_front_end > out/gra.txt
-```
-
-Windows机器:
-```
-$ make clean #清除全部bin及txt输出文件
-$ make #编译
-$ ./Compiler_front_end.exe > out/gra.txt
+$ ./Compiler_front_end > out/gra.txt #输出
 ```
 
 ## 输出
